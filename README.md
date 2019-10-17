@@ -16,7 +16,7 @@ We have the following form model:
 
 ```
 const myFormValues = {
-  product : 'shoes',
+  product: 'shoes',
   price: 20,
 }
 ```
@@ -27,7 +27,9 @@ We can add a laterDate validation to the myFormValues
 import { laterDate } from '@lemoncode/fonk-later-date-validator';
 
 const validationSchema = {
-  price: [laterDate.validator],
+  field: {
+    price: [laterDate.validator],
+  },
 };
 ```
 
@@ -47,12 +49,14 @@ laterDate.setErrorMessage('El campo debe de ser numérico');
 import { laterDate } from '@lemoncode/fonk-later-date-validator';
 
 const validationSchema = {
-  price: [
-    {
-      validator: laterDate.validator,
-      message: 'Error message only updated for the validation schema',
-    },
-  ],
+  field: {
+    price: [
+      {
+        validator: laterDate.validator,
+        message: 'Error message only updated for the validation schema',
+      },
+    ],
+  },
 };
 ```
 
