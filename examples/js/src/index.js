@@ -15,7 +15,7 @@ const validationSchema = {
 const formValidation = createFormValidation(validationSchema);
 
 Promise.all([
-  formValidation.validateField('myField', 'test'),
+  formValidation.validateField('myField', new Date('2019-01-10')),
   formValidation.validateField('myField', new Date('2019-03-10')),
 ]).then(([failedResult, succeededResult]) => {
   document.getElementById('app').innerHTML = `
