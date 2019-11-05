@@ -11,7 +11,6 @@ export interface CustomArgs {
 
 const MISSING_ARGS =
   'FieldValidationError: date option for date validation is mandatory. Example: { date: new Date() }.';
-const BAD_PARAMETER = 'Value must be a valid Date object.';
 
 let defaultMessage = "Date isn't later than the one provided.";
 export const setErrorMessage = message => (defaultMessage = message);
