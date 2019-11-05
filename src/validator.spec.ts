@@ -144,37 +144,43 @@ describe('fonk-later-date-validator specs', () => {
     });
   });
 
-  it('should throw an error when it feeds value equals undefined', () => {
-    const value = undefined;
-    const date = new Date(2018, 12, 30, 15, 33, 30, 0);
-    const validatorArgs = { value, customArgs: { date } };
+  it('should return succeeded validation when it feeds value equals undefined', () => {
+    const value = void 0;
+    const date = new Date(2018, 11, 30, 15, 33, 30, 0);
 
-    expect(() => validator(validatorArgs)).toThrow(TypeError);
-    expect(() => validator(validatorArgs)).toThrowError(
-      'Value must be a valid Date object'
-    );
+    const result = validator({ value, customArgs: { date } });
+
+    expect(result).toEqual({
+      succeeded: true,
+      message: '',
+      type: 'LATER_DATE',
+    });
   });
 
-  it('should throw an error when it feeds value equals null', () => {
+  it('should return succeeded validation when it feeds value equals null', () => {
     const value = null;
-    const date = new Date(2018, 12, 30, 15, 33, 30, 0);
-    const validatorArgs = { value, customArgs: { date } };
+    const date = new Date(2018, 11, 30, 15, 33, 30, 0);
 
-    expect(() => validator(validatorArgs)).toThrow(TypeError);
-    expect(() => validator(validatorArgs)).toThrowError(
-      'Value must be a valid Date object'
-    );
+    const result = validator({ value, customArgs: { date } });
+
+    expect(result).toEqual({
+      succeeded: true,
+      message: '',
+      type: 'LATER_DATE',
+    });
   });
 
-  it('should throw an error when it feeds value equals empty string', () => {
+  it('should return succeeded validation when it feeds value equals empty string', () => {
     const value = '';
-    const date = new Date(2018, 12, 30, 15, 33, 30, 0);
-    const validatorArgs = { value, customArgs: { date } };
+    const date = new Date(2018, 11, 30, 15, 33, 30, 0);
 
-    expect(() => validator(validatorArgs)).toThrow(TypeError);
-    expect(() => validator(validatorArgs)).toThrowError(
-      'Value must be a valid Date object'
-    );
+    const result = validator({ value, customArgs: { date } });
+
+    expect(result).toEqual({
+      succeeded: true,
+      message: '',
+      type: 'LATER_DATE',
+    });
   });
 
   it('should overwrite default message when it feeds value and message', () => {
