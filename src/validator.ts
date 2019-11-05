@@ -16,6 +16,8 @@ const BAD_PARAMETER = 'Value must be a valid Date object.';
 let defaultMessage = "Date isn't later than the one provided.";
 export const setErrorMessage = message => (defaultMessage = message);
 
+const isDefined = value => value !== void 0 && value !== null && value !== '';
+
 export const validator: FieldValidationFunctionSync<CustomArgs> = ({
   value,
   message = defaultMessage,
@@ -27,11 +29,7 @@ export const validator: FieldValidationFunctionSync<CustomArgs> = ({
 
   const { date } = customArgs;
 
-  if (!(value instanceof Date)) {
-    throw new TypeError(BAD_PARAMETER);
-  }
-
-  const succeeded = value > date;
+  const succeeded = !isDefined(value) || value > date;
 
   return {
     succeeded,
