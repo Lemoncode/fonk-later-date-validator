@@ -6,9 +6,7 @@
 
 This is a [fonk](https://github.com/Lemoncode/fonk) microlibrary that brings validation capabilities to:
 
-// TODO: Update description and example.
-
-- Validate if a field of a form ....
+- Validate if a field of a form is later than a specified date.
 
 How to install it:
 
@@ -23,7 +21,7 @@ We have the following form model:
 ```
 const myFormValues = {
   product: 'shoes',
-  price: 20,
+  purchaseDate: new Date(),
 }
 ```
 
@@ -34,7 +32,7 @@ import { laterDate } from '@lemoncode/fonk-later-date-validator';
 
 const validationSchema = {
   field: {
-    price: [laterDate.validator],
+    purchaseDate: [laterDate.validator],
   },
 };
 ```
@@ -56,7 +54,7 @@ import { laterDate } from '@lemoncode/fonk-later-date-validator';
 
 const validationSchema = {
   field: {
-    price: [
+    purchaseDate: [
       {
         validator: laterDate.validator,
         message: 'Error message only updated for the validation schema',
