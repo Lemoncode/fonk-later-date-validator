@@ -32,7 +32,12 @@ import { laterDate } from '@lemoncode/fonk-later-date-validator';
 
 const validationSchema = {
   field: {
-    purchaseDate: [laterDate.validator],
+    purchaseDate: [
+      {
+        validator: laterDate.validator,
+        customArgs: { date: new Date('2019-02-10') },
+      },
+    ],
   },
 };
 ```
@@ -58,6 +63,7 @@ const validationSchema = {
       {
         validator: laterDate.validator,
         message: 'Error message only updated for the validation schema',
+        customArgs: { date: new Date('2019-02-10') },
       },
     ],
   },
