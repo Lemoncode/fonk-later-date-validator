@@ -3,30 +3,71 @@ import {
   parseMessageWithCustomArgs,
 } from '@lemoncode/fonk';
 
-// TODO: Add validator type
-const VALIDATOR_TYPE = '';
+const VALIDATOR_TYPE = 'LATER_DATE';
 
-// TODO: Add default message
-let defaultMessage = '';
+export interface CustomArgs {
+  date: Date;
+  parseStringToDateFn?: (value: string) => Date;
+  inclusive?: boolean;
+}
+
+let defaultCustomArgs: CustomArgs = {
+  date: null,
+  parseStringToDateFn: null,
+  inclusive: false,
+};
+
+export const setCustomArgs = (customArgs: Partial<CustomArgs>) => {
+  defaultCustomArgs = { ...defaultCustomArgs, ...customArgs };
+};
+
+const MISSING_DATE_ARGS =
+  'FieldValidationError: date custom arg is mandatory. Example: { customArgs: { date: new Date() } }.';
+
+const MISSING_PARSE_ARGS =
+  'FieldValidationError: parseStringToDateFn custom arg is mandatory when value is string. Example: { customArgs: { parseStringToDateFn: (value) => new Date(value) } }.';
+
+let defaultMessage = "Date isn't later than the one provided.";
 export const setErrorMessage = message => (defaultMessage = message);
 
 const isDefined = value => value !== void 0 && value !== null && value !== '';
 
-export const validator: FieldValidationFunctionSync = fieldValidatorArgs => {
-  const { value, message = defaultMessage, customArgs } = fieldValidatorArgs;
+const isString = value => typeof value === 'string';
 
-  // TODO: Add validator
-  const succeeded = !isDefined(value) || ...;
+const parseToDate = (value, { parseStringToDateFn }: CustomArgs) => {
+  if (!parseStringToDateFn) {
+    throw new Error(MISSING_PARSE_ARGS);
+  }
+
+  return parseStringToDateFn(value);
+};
+
+const isValid = (value: Date, customArgs: CustomArgs) =>
+  customArgs.inclusive ? value >= customArgs.date : value > customArgs.date;
+
+export const validator: FieldValidationFunctionSync<CustomArgs> = ({
+  value,
+  message = defaultMessage,
+  customArgs = defaultCustomArgs,
+}) => {
+  const args: CustomArgs = {
+    ...defaultCustomArgs,
+    ...customArgs,
+  };
+
+  if (!args || !args.date) {
+    throw new Error(MISSING_DATE_ARGS);
+  }
+
+  const valueAsDate = isString(value) ? parseToDate(value, args) : value;
+
+  const succeeded = !isDefined(value) || isValid(valueAsDate, args);
 
   return {
     succeeded,
     message: succeeded
       ? ''
-      : // TODO: Use if it has custom args
-        parseMessageWithCustomArgs(
-          (message as string) || defaultMessage,
-          customArgs
-        ),
+      : parseMessageWithCustomArgs(message as string, args),
     type: VALIDATOR_TYPE,
   };
 };
