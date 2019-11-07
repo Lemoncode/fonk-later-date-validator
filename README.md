@@ -171,7 +171,11 @@ laterDate.setCustomArgs({ inclusive: true });
 
 // OR
 
-laterDate.setCustomArgs({ date: new Date(), parseStringToDateFn: (value) => new Date(value)), inclusive: true });
+laterDate.setCustomArgs({
+  date: new Date(),
+  parseStringToDateFn: value => new Date(value),
+  inclusive: true,
+});
 
 ```
 
