@@ -1,8 +1,11 @@
 import { setErrorMessage, validator } from './validator';
 
+const VALIDATOR_TYPE = 'LATER_DATE';
+const VALIDATOR_MESSAGE = "Date isn't later than the one provided.";
+
 describe('fonk-later-date-validator specs', () => {
   it('should return succeeded validation when value is a valid Date object later than actual Date', () => {
-    const value = new Date(2020, 11, 24, 10, 33, 30, 0);
+    const value = new Date('2020-11-24 10:33:30:000');
     const date = new Date();
 
     const result = validator({ value, customArgs: { date } });
@@ -10,33 +13,33 @@ describe('fonk-later-date-validator specs', () => {
     expect(result).toEqual({
       succeeded: true,
       message: '',
-      type: 'LATER_DATE',
+      type: VALIDATOR_TYPE,
     });
   });
 
   it('should return succeeded validation when value is a valid Date object later than customArgs date param', () => {
-    const value = new Date(2019, 11, 24, 10, 33, 30, 0);
-    const date = new Date(2018, 11, 30, 15, 33, 30, 0);
+    const value = new Date('2019-11-24 10:33:30:000');
+    const date = new Date('2018-11-24 15:33:30:000');
 
     const result = validator({ value, customArgs: { date } });
 
     expect(result).toEqual({
       succeeded: true,
       message: '',
-      type: 'LATER_DATE',
+      type: VALIDATOR_TYPE,
     });
   });
 
   it('should return succeeded validation when value is a valid Date object later than customArgs date param by one second', () => {
-    const value = new Date(2019, 11, 24, 10, 33, 30, 1);
-    const date = new Date(2018, 11, 24, 10, 33, 30, 0);
+    const value = new Date('2019-11-24 10:33:30:001');
+    const date = new Date('2019-11-24 10:33:30:000');
 
     const result = validator({ value, customArgs: { date } });
 
     expect(result).toEqual({
       succeeded: true,
       message: '',
-      type: 'LATER_DATE',
+      type: VALIDATOR_TYPE,
     });
   });
 
@@ -49,7 +52,7 @@ describe('fonk-later-date-validator specs', () => {
     expect(result).toEqual({
       succeeded: true,
       message: '',
-      type: 'LATER_DATE',
+      type: VALIDATOR_TYPE,
     });
   });
 
@@ -62,7 +65,7 @@ describe('fonk-later-date-validator specs', () => {
     expect(result).toEqual({
       succeeded: true,
       message: '',
-      type: 'LATER_DATE',
+      type: VALIDATOR_TYPE,
     });
   });
 
@@ -75,7 +78,7 @@ describe('fonk-later-date-validator specs', () => {
     expect(result).toEqual({
       succeeded: true,
       message: '',
-      type: 'LATER_DATE',
+      type: VALIDATOR_TYPE,
     });
   });
 
@@ -88,7 +91,7 @@ describe('fonk-later-date-validator specs', () => {
     expect(result).toEqual({
       succeeded: true,
       message: '',
-      type: 'LATER_DATE',
+      type: VALIDATOR_TYPE,
     });
   });
 
@@ -101,7 +104,7 @@ describe('fonk-later-date-validator specs', () => {
     expect(result).toEqual({
       succeeded: true,
       message: '',
-      type: 'LATER_DATE',
+      type: VALIDATOR_TYPE,
     });
   });
 
@@ -114,7 +117,7 @@ describe('fonk-later-date-validator specs', () => {
     expect(result).toEqual({
       succeeded: true,
       message: '',
-      type: 'LATER_DATE',
+      type: VALIDATOR_TYPE,
     });
   });
 
@@ -127,111 +130,111 @@ describe('fonk-later-date-validator specs', () => {
     expect(result).toEqual({
       succeeded: true,
       message: '',
-      type: 'LATER_DATE',
+      type: VALIDATOR_TYPE,
     });
   });
 
-  it('should return failed validation when value is a valid Date object later than customArgs date param', () => {
-    const date = new Date('December 24, 2018 10:33:00');
-    const value = new Date(2018, 2, 24, 10, 33, 30, 0);
+  it('should return failed validation when value is a valid Date object previous than customArgs date param', () => {
+    const value = new Date('2018-02-24 10:33:30:000');
+    const date = new Date('2018-12-24 10:33:30:000');
 
     const result = validator({ value, customArgs: { date } });
 
     expect(result).toEqual({
       succeeded: false,
-      message: "Date isn't later than the one provided.",
-      type: 'LATER_DATE',
+      message: VALIDATOR_MESSAGE,
+      type: VALIDATOR_TYPE,
     });
   });
 
   it('should return failed validation when value is a valid Date object with year earlier than customArgs date param', () => {
-    const date = new Date(2019);
     const value = new Date(2018);
+    const date = new Date(2019);
 
     const result = validator({ value, customArgs: { date } });
 
     expect(result).toEqual({
       succeeded: false,
-      message: "Date isn't later than the one provided.",
-      type: 'LATER_DATE',
+      message: VALIDATOR_MESSAGE,
+      type: VALIDATOR_TYPE,
     });
   });
 
   it('should return failed validation when value is a valid Date object with year and month earlier than customArgs date param', () => {
-    const date = new Date(2018, 2);
     const value = new Date(2018, 1);
+    const date = new Date(2018, 2);
 
     const result = validator({ value, customArgs: { date } });
 
     expect(result).toEqual({
       succeeded: false,
-      message: "Date isn't later than the one provided.",
-      type: 'LATER_DATE',
+      message: VALIDATOR_MESSAGE,
+      type: VALIDATOR_TYPE,
     });
   });
 
   it('should return failed validation when value is a valid Date object with year, month and days earlier than customArgs date param', () => {
-    const date = new Date(2018, 11, 21);
     const value = new Date(2018, 11, 10);
+    const date = new Date(2018, 11, 21);
 
     const result = validator({ value, customArgs: { date } });
 
     expect(result).toEqual({
       succeeded: false,
-      message: "Date isn't later than the one provided.",
-      type: 'LATER_DATE',
+      message: VALIDATOR_MESSAGE,
+      type: VALIDATOR_TYPE,
     });
   });
 
   it('should return failed validation when value is a valid Date object with year, month, days and hours earlier than customArgs date param', () => {
-    const date = new Date(2018, 11, 30, 21);
     const value = new Date(2018, 11, 30, 15);
+    const date = new Date(2018, 11, 30, 21);
 
     const result = validator({ value, customArgs: { date } });
 
     expect(result).toEqual({
       succeeded: false,
-      message: "Date isn't later than the one provided.",
-      type: 'LATER_DATE',
+      message: VALIDATOR_MESSAGE,
+      type: VALIDATOR_TYPE,
     });
   });
 
   it('should return failed validation when value is a valid Date object with year, month, days, hours and minutes earlier than customArgs date param', () => {
-    const date = new Date(2018, 10, 24, 10, 45);
     const value = new Date(2018, 10, 24, 10, 24);
+    const date = new Date(2018, 10, 24, 10, 45);
 
     const result = validator({ value, customArgs: { date } });
 
     expect(result).toEqual({
       succeeded: false,
-      message: "Date isn't later than the one provided.",
-      type: 'LATER_DATE',
+      message: VALIDATOR_MESSAGE,
+      type: VALIDATOR_TYPE,
     });
   });
 
   it('should return failed validation when value is a valid Date object year, month, days, hours, minutes and seconds earlier than customArgs date param', () => {
-    const date = new Date(2018, 9, 30, 15, 33, 34);
     const value = new Date(2018, 9, 30, 15, 33, 17);
+    const date = new Date(2018, 9, 30, 15, 33, 34);
 
     const result = validator({ value, customArgs: { date } });
 
     expect(result).toEqual({
       succeeded: false,
-      message: "Date isn't later than the one provided.",
-      type: 'LATER_DATE',
+      message: VALIDATOR_MESSAGE,
+      type: VALIDATOR_TYPE,
     });
   });
 
   it('should return failed validation when value is a valid Date object year, month, days, hours, minutes, seconds and milliseconds earlier than customArgs date param', () => {
-    const date = new Date(2018, 9, 30, 15, 33, 45, 45);
     const value = new Date(2018, 9, 30, 15, 33, 45, 6);
+    const date = new Date(2018, 9, 30, 15, 33, 45, 45);
 
     const result = validator({ value, customArgs: { date } });
 
     expect(result).toEqual({
       succeeded: false,
-      message: "Date isn't later than the one provided.",
-      type: 'LATER_DATE',
+      message: VALIDATOR_MESSAGE,
+      type: VALIDATOR_TYPE,
     });
   });
 
@@ -244,7 +247,7 @@ describe('fonk-later-date-validator specs', () => {
     expect(result).toEqual({
       succeeded: true,
       message: '',
-      type: 'LATER_DATE',
+      type: VALIDATOR_TYPE,
     });
   });
 
@@ -257,20 +260,121 @@ describe('fonk-later-date-validator specs', () => {
     expect(result).toEqual({
       succeeded: true,
       message: '',
-      type: 'LATER_DATE',
+      type: VALIDATOR_TYPE,
     });
   });
 
   it('should return succeeded validation when it feeds value equals empty string', () => {
     const value = '';
-    const date = new Date(2018, 11, 30, 15, 33, 30, 0);
+    const customArgs = {
+      date: new Date(2018, 11, 30, 15, 33, 30, 0),
+      parseStringToDateFn: (value: string) => new Date(value),
+    };
 
-    const result = validator({ value, customArgs: { date } });
+    const result = validator({ value, customArgs });
 
     expect(result).toEqual({
       succeeded: true,
       message: '',
-      type: 'LATER_DATE',
+      type: VALIDATOR_TYPE,
+    });
+  });
+
+  it('should return failed validation when it feeds value equals string with letters and numbers', () => {
+    const value = 'test1234';
+    const customArgs = {
+      date: new Date('2018-11-30T15:30:00'),
+      parseStringToDateFn: (value: string) => new Date(value),
+    };
+
+    const result = validator({ value, customArgs });
+
+    expect(result).toEqual({
+      succeeded: false,
+      message: VALIDATOR_MESSAGE,
+      type: VALIDATOR_TYPE,
+    });
+  });
+
+  it('should return failed validation when it feeds value equals string with invalid format date', () => {
+    const value = '14:00:00 30-11-2018';
+    const customArgs = {
+      date: new Date('2018-11-30T15:30:00'),
+      parseStringToDateFn: (value: string) => new Date(value),
+    };
+
+    const result = validator({ value, customArgs });
+
+    expect(result).toEqual({
+      succeeded: false,
+      message: VALIDATOR_MESSAGE,
+      type: VALIDATOR_TYPE,
+    });
+  });
+
+  it('should return failed validation when it feeds value equals string with valid format date and is previous date', () => {
+    const value = '2018-11-30 14:00:00';
+    const customArgs = {
+      date: new Date('2018-11-30T15:30:00'),
+      parseStringToDateFn: (value: string) => new Date(value),
+    };
+
+    const result = validator({ value, customArgs });
+
+    expect(result).toEqual({
+      succeeded: false,
+      message: VALIDATOR_MESSAGE,
+      type: VALIDATOR_TYPE,
+    });
+  });
+
+  it('should return succeded validation when it feeds value equals string with valid format date and is later date', () => {
+    const value = '2018-11-30 16:00:00';
+    const customArgs = {
+      date: new Date('2018-11-30T15:30:00'),
+      parseStringToDateFn: (value: string) => new Date(value),
+    };
+
+    const result = validator({ value, customArgs });
+
+    expect(result).toEqual({
+      succeeded: true,
+      message: '',
+      type: VALIDATOR_TYPE,
+    });
+  });
+
+  it('should return failed validation when it feeds inclusive equals false, value equals string with valid format date and is same date', () => {
+    const value = '2018-11-30 14:00:00';
+    const customArgs = {
+      date: new Date('2018-11-30T14:00:00'),
+      parseStringToDateFn: (value: string) => new Date(value),
+      inclusive: false,
+    };
+
+    const result = validator({ value, customArgs });
+
+    expect(result).toEqual({
+      succeeded: false,
+      message: VALIDATOR_MESSAGE,
+      type: VALIDATOR_TYPE,
+    });
+  });
+
+  it('should return succeeded validation when it feeds inclusive equals true, value equals string with valid format date and is same date', () => {
+    const value = '2018-11-30 14:00:00';
+    const customArgs = {
+      date: new Date('2018-11-30T14:00:00'),
+      parseStringToDateFn: (value: string) => new Date(value),
+      inclusive: true,
+    };
+
+    const result = validator({ value, customArgs });
+
+    expect(result).toEqual({
+      succeeded: true,
+      message: '',
+      type: VALIDATOR_TYPE,
     });
   });
 
@@ -284,7 +388,7 @@ describe('fonk-later-date-validator specs', () => {
     expect(result).toEqual({
       succeeded: false,
       message: 'other message',
-      type: 'LATER_DATE',
+      type: VALIDATOR_TYPE,
     });
   });
 
@@ -298,7 +402,7 @@ describe('fonk-later-date-validator specs', () => {
     expect(result).toEqual({
       succeeded: false,
       message: 'other message',
-      type: 'LATER_DATE',
+      type: VALIDATOR_TYPE,
     });
   });
 
@@ -309,7 +413,39 @@ describe('fonk-later-date-validator specs', () => {
 
       expect(() => validator(validatorArgs)).toThrow(Error);
       expect(() => validator(validatorArgs)).toThrowError(
-        'FieldValidationError: date option for date validation is mandatory. Example: { date: new Date() }.'
+        'FieldValidationError: date custom arg is mandatory. Example: { customArgs: { date: new Date() } }.'
+      );
+    });
+
+    it('Should throw an error if customArgs.date is not provided', () => {
+      const value = new Date(2018, 11, 24, 10, 33, 30, 0);
+
+      expect(() => validator({ value, customArgs: { date: void 0 } })).toThrow(
+        Error
+      );
+      expect(() =>
+        validator({ value, customArgs: { date: void 0 } })
+      ).toThrowError(
+        'FieldValidationError: date custom arg is mandatory. Example: { customArgs: { date: new Date() } }.'
+      );
+    });
+
+    it('Should throw an error if value is string and customArgs.parseStringToDateFn is not provided', () => {
+      const value = '2019-11-06';
+
+      expect(() =>
+        validator({
+          value,
+          customArgs: { date: new Date(), parseStringToDateFn: void 0 },
+        })
+      ).toThrow(Error);
+      expect(() =>
+        validator({
+          value,
+          customArgs: { date: new Date(), parseStringToDateFn: void 0 },
+        })
+      ).toThrowError(
+        'FieldValidationError: parseStringToDateFn custom arg is mandatory when value is string. Example: { customArgs: { parseStringToDateFn: (value) => new Date(value) } }.'
       );
     });
   });
