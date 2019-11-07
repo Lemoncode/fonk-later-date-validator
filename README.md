@@ -25,6 +25,26 @@ const myFormValues = {
 }
 ```
 
+The validator must be configured with the following required arguments:
+
+```javascript
+export interface CustomArgs {
+  date: Date;
+  parseStringToDateFn?: (value: string) => Date;
+  inclusive?: boolean;
+}
+```
+
+These are the default arguments:
+
+```javascript
+let defaultCustomArgs: CustomArgs = {
+  date: null,
+  parseStringToDateFn: null,
+  inclusive: false,
+};
+```
+
 We can add a laterDate validation to the myFormValues
 
 ```javascript
@@ -68,6 +88,91 @@ const validationSchema = {
     ],
   },
 };
+```
+
+This validator compare [Date](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Date) values. If your model use dates as string format, you can provide the `parseStringToDateFn` method.
+
+```javascript
+import { laterDate } from '@lemoncode/fonk-later-date-validator';
+
+const validationSchema = {
+  field: {
+    purchaseDate: [
+      {
+        validator: laterDate.validator,
+        customArgs: {
+          date: new Date('2019-03-10T00:00:00'),
+          parseStringToDateFn: value => new Date(value),
+        },
+      },
+    ],
+  },
+};
+```
+
+Or if you are using some third party library like _moment_, _date-fns_, etc:
+
+```diff
+import { laterDate } from '@lemoncode/fonk-later-date-validator';
++ import parse from 'date-fns/parse'
+
+const validationSchema = {
+  field: {
+    purchaseDate: [
+      {
+        validator: laterDate.validator,
+        customArgs: {
+          date: new Date('2019-03-10T00:00:00'),
+-         parseStringToDateFn: value => new Date(value),
++         parseStringToDateFn: value => parse(value, 'yyyy-MM-dd HH:mm:ss', new Date()),
+        },
+      },
+    ],
+  },
+};
+```
+
+You can specify the custom arguments in two ways:
+
+- Locally just customize the arguments for this validationSchema:
+
+```javascript
+import { laterDate } from '@lemoncode/fonk-later-date-validator';
+
+const validationSchema = {
+  field: {
+    purchaseDate: [
+      {
+        validator: laterDate.validator,
+        customArgs: {
+          date: new Date('2019-03-10'),
+          parseStringToDateFn: value => new Date(value),
+        },
+      },
+    ],
+  },
+};
+```
+
+- Globally, replace the default custom arguments in all validationSchemas (e.g. enable strict types):
+
+```javascript
+import { laterDate } from '@lemoncode/fonk-later-date-validator';
+
+laterDate.setCustomArgs({ parseStringToDateFn: (value) => new Date(value) ) });
+
+// OR
+
+laterDate.setCustomArgs({ date: new Date() });
+
+// OR
+
+laterDate.setCustomArgs({ inclusive: true });
+
+// OR
+
+laterDate.setCustomArgs({ date: new Date(), parseStringToDateFn: (value) => new Date(value)), inclusive: true });
+
 ```
 
 Please, refer to [fonk](https://github.com/Lemoncode/fonk) to know more.
