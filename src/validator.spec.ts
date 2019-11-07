@@ -4,19 +4,6 @@ const VALIDATOR_TYPE = 'LATER_DATE';
 const VALIDATOR_MESSAGE = "Date isn't later than the one provided.";
 
 describe('fonk-later-date-validator specs', () => {
-  it('should return succeeded validation when value is a valid Date object later than actual Date', () => {
-    const value = new Date('2020-11-24 10:33:30:000');
-    const date = new Date();
-
-    const result = validator({ value, customArgs: { date } });
-
-    expect(result).toEqual({
-      succeeded: true,
-      message: '',
-      type: VALIDATOR_TYPE,
-    });
-  });
-
   it('should return succeeded validation when value is a valid Date object later than customArgs date param', () => {
     const value = new Date('2019-11-24 10:33:30:000');
     const date = new Date('2018-11-24 15:33:30:000');
